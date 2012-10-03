@@ -30,6 +30,9 @@ jfbd.run = function($) {
   function getNiceString(jsonObject, indentLevel) {
     var res = '';
 
+    if (jsonObject === null) { return 'null'; }
+    if (jsonObject === undefined) { return 'undefined'; }
+
     _.each(_.keys(jsonObject), function(k) {
       var representation, value = jsonObject[k];
 
