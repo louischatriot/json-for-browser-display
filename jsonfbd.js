@@ -31,23 +31,31 @@ console.log(contents);
 
 
 
-// Launch the bookmarklet
+// Get underscore and jquery from their CDNs, then launch the bookmarklet
+// Code is ugly but it works and is not intended to be modified
 (function (app) {
-  //Get jQuery if the current page doesn't have it
-  if ( typeof jQuery === 'undefined' || jQuery.fn.jquery.substring(0,3) !== '1.7') {
+  var underscore = document.createElement('script');
+  underscore.src = "http://underscorejs.org/underscore-min.js";
 
-    var fileref = document.createElement('script');
-    fileref.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
+  underscore.onload = function () {
+    //Get jQuery if the current page doesn't have it
+    if ( typeof jQuery === 'undefined' || jQuery.fn.jquery.substring(0,3) !== '1.7') {
 
-    fileref.onload = function() {
+      var fileref = document.createElement('script');
+      fileref.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
+
+      fileref.onload = function() {
+        app.run(jQuery);
+      }
+
+      document.body.appendChild(fileref);
+    } else {
       app.run(jQuery);
     }
+  };
 
-    document.body.appendChild(fileref);
+  document.body.appendChild(underscore);
 
-  } else {
-    app.run(jQuery);
-  }
 }(jfbd));
 
 
