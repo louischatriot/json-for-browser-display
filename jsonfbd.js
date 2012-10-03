@@ -1,5 +1,6 @@
 /*
  * Bookmarklet that gets the json being displayed and returns a nicely formatted (and indented) JSON
+ * Its not intended to be modified and I only use it as a dev tool so I didn't bother making the code beautiful or even acceptable
  * Author: Louis Chatriot
  */
 
@@ -15,11 +16,6 @@ jfbd.run = function($) {
   // Works with Chrome with which I develop, not tested on firefox
   contents = JSON.parse($('pre').html());
 
-
-
-console.log(contents);
-console.log("===============");
-
   function getIndent(indentLevel) {
     var res = '', i;
 
@@ -34,12 +30,25 @@ console.log("===============");
   function getNiceString(jsonObject, indentLevel) {
     var res = '';
 
-    _.each(_.keys(contents), function(k) {
-      res = res + "<div>" + getIndent(indentLevel) + k + "</div>";
+    _.each(_.keys(jsonObject), function(k) {
+      var representation, value = jsonObject[k];
+
+      if (typeof value === "number") {
+        representation = '' + value;
+      } else if (typeof value === "object") {
+        representation = getNiceString(value, indentLevel + 1);
+      } else if (typeof value === "string") {
+        representation = '"' + value + '"';
+      } else {
+        representation = '';   // Don't represent it
+      }
+
+      res = res + "<div>" + getIndent(indentLevel) + k + ": " + representation + "</div>";
     });
 
     return res;
   }
+
 
   // Display the nice JSON format
   toDisplay = '<pre style="font-family: Bitstream Vera Sans Mono, Courier New, monospace;">' + getNiceString(contents, 1) + '</pre>';
