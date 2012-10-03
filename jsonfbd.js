@@ -8,7 +8,7 @@ var jfbd = jfbd || {};
 jfbd.indentLevel = "  ";
 
 jfbd.run = function($) {
-  var contents, prop;
+  var contents, toDisplay;
 
   console.log("jQuery and jfbd bookmarklet loaded");
 
@@ -18,15 +18,32 @@ jfbd.run = function($) {
 
 
 console.log(contents);
+console.log("===============");
+
+  function getIndent(indentLevel) {
+    var res = '', i;
+
+    for (i = 0; i < indentLevel; i++) {
+      res = res + jfbd.indentLevel;
+    }
+
+    return res;
+  }
 
 
+  function getNiceString(jsonObject, indentLevel) {
+    var res = '';
 
+    _.each(_.keys(contents), function(k) {
+      res = res + "<div>" + getIndent(indentLevel) + k + "</div>";
+    });
 
+    return res;
+  }
 
-//var newDoc = document.open("text/html", "replace");
-//newDoc.close();
-//$('body').html('dsdfsfsf<br>sdssdsdsdfZZZ');
-
+  // Display the nice JSON format
+  toDisplay = '<pre style="font-family: Bitstream Vera Sans Mono, Courier New, monospace;">' + getNiceString(contents, 1) + '</pre>';
+  $('body').html(toDisplay);
 };
 
 
