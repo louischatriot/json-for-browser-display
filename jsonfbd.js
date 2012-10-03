@@ -43,7 +43,7 @@ jfbd.run = function($) {
         representation = '';   // Don't represent it
       }
 
-      res = res + "<div>" + getIndent(indentLevel) + k + ": " + representation + "</div>";
+      res = res + "<div>" + getIndent(indentLevel) + "<strong>" + k + "</strong>" + ": " + representation + "</div>";
     });
 
     return res;
